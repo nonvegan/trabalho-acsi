@@ -1,0 +1,66 @@
+body {
+  font-family: sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 2rem;
+}
+
+td {
+  text-align: center;
+}
+table td {
+  font-weight:bold;
+}
+
+input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.container-table100 {
+  width: 100%;
+  min-height: 100vh;
+  background: #c850c0;
+  background: linear-gradient(45deg, #4158d0, #c850c0);
+  padding: 2rem 0rem;
+}
+
+.btn-hover {
+  width: 10rem;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  margin: 20px;
+  height: 40px;
+  text-align:center;
+  border: none;
+  background-size: 300% 100%;
+  border-radius: 25px;
+  transition: all .4s ease-in-out;
+}
+
+.btn-hover:hover {
+  background-position: 100% 0;
+  transition: all .4s ease-in-out;
+}
+
+.btn-hover:focus {
+  outline: none;
+}
+
+.btn-hover.color-11 {
+  background-image: linear-gradient(to right, #eb3941, #f15e64, #e14e53, #e2373f);
+}
+
+.btn-hover.color-9 {
+  background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
+}
+
+.buttons-div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
