@@ -94,6 +94,8 @@ window.addEventListener("load", (evt) => {
       load_table(state);
     } else {
       load_table(dummy_state);
+      localStorage.setItem("act-count", 3);
+      localStorage.setItem("role-count", 3);
     }
   }
 
@@ -190,7 +192,10 @@ window.addEventListener("load", (evt) => {
   document.getElementById("add-act").addEventListener("click", (evt) => {
     const new_row = document.createElement("tr");
     const new_cell = document.createElement("td");
-    new_cell.innerText = "New Activity";
+    let act_count = Number(localStorage.getItem("act-count"));
+    isNaN(act_count) ?  (act_count = 1) : (act_count++);
+    localStorage.setItem("act-count", act_count);
+    new_cell.innerText = `Activity ${act_count}`;
     new_cell.contentEditable = true;
     new_cell.addEventListener("keypress", (evt) => {
       switch (evt.key) {
@@ -234,7 +239,10 @@ window.addEventListener("load", (evt) => {
 
   document.getElementById("add-role").addEventListener("click", (evt) => {
     const new_cell = document.createElement("th");
-    new_cell.innerText = "New Role";
+    let role_count = Number(localStorage.getItem("role-count"));
+    isNaN(role_count) ?  (role_count = 1) : (role_count++);
+    localStorage.setItem("role-count", role_count);
+    new_cell.innerText = `Role ${role_count}`;
     new_cell.className = "special";
     new_cell.contentEditable = true;
     new_cell.addEventListener("keypress", (evt) => {
@@ -285,6 +293,8 @@ window.addEventListener("load", (evt) => {
   document.getElementById("new").addEventListener("click", (evt) => {
     reset_table();
     load_table(dummy_state);
+    localStorage.setItem("act-count", 3);
+    localStorage.setItem("role-count", 3);
     quick_save_state();
   });
 
@@ -307,6 +317,8 @@ window.addEventListener("load", (evt) => {
           if (is_valid_state(state)) {
             reset_table();
             load_table(state);
+            localStorage.setItem("act-count", 1);
+            localStorage.setItem("role-count", 1);
             quick_save_state();
             Toast.fire({
               icon: "success",
