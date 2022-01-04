@@ -8,15 +8,17 @@ h1 {
   margin-bottom: 2rem;
 }
 
-td {
+td,
+th {
   text-align: center;
 }
+
 table td {
-  font-weight:bold;
+  font-weight: bold;
 }
 
 input[type="checkbox"] {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .container-table100 {
@@ -35,7 +37,7 @@ input[type="checkbox"] {
   cursor: pointer;
   margin: 20px;
   height: 40px;
-  text-align:center;
+  text-align: center;
   border: none;
   background-size: 300% 100%;
   border-radius: 25px;
