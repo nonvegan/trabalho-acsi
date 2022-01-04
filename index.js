@@ -92,7 +92,7 @@ window.addEventListener("load", (evt) => {
   }
 
   function reset_table() {
-    tbody.innerHTML = "<tr><th>Permissions</th></tr>";
+    tbody.innerHTML = "<tr><th>Activities / Roles</th></tr>";
   }
 
   function load_table(state) {
@@ -285,14 +285,15 @@ window.addEventListener("load", (evt) => {
       "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAIAAAC0Ujn1AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAANaSURBVEhL1ZZLTxNRFIDvmenQmbaUUmox6sKtMfEV98aVIiEuxIS4QJGXNS6NvBLdGSIiG+NfIFGRN26IEo0xujExgRAjakxIMZZH6budmeu50wthXmzUGD8odM6595tzTmcmhe9NDcGMSCghQP4sAv//F/hXalr+wWHZwFj51x13tWEFzRBb7CxBiK4ZS3jMzq5VF/Kql0AhTzSdRwyYLZvVFIlk0lQ3pXbiosZqMil6+FD1s/GKsVFVzZKSWi4d/wrJVXr6VOjpiDw8rG9uUE0z9lhxUlPKvMePBoeGMK34FGV0UtNyoDK7kEwU685V9/ViSq7do4w8oZtJojrYbWpWb5aeOFI1OCjyAPH5FWUM7XlIxEv1DZGebiPDOlCiUWV0REsn7bWb1ZToah5OHgvdf7B9A5XfYO3+xyOk+XJN1y0jwABglciRiG9sHIp57JYnDKxV02JBajiPb+z3phQKVsVi/GALMBZK4ZBaGwHzp21VC/5g4XZfYeWH/aKyzY6DvvTAPSH+k4jlEXLM67ECCqIvmGm8UIzHedAdnAZ6UwP9dHJG8AUsnVpLwfHpgiiFwunGi4XlZdeLFmF9wWb/XTrxHKqq7RN06JLZQZSqw6mzdaVclkdtaECSjx7S8UkIhe1exGmAWA5QbW3dG+uQFB8P2sCdcms7hMNULRgdWLGpcX5A9UTCc+VS4PoNpzNzsFCv1ytPT1N82qtFu920t5yla6sVLc2BjphTlyZwgYyX/NQMlYCqJYvdpAZKdXwYNTX62zvsXqemGcw+MUVEtpuHDCwdY7ok7T/gWC/eyLn4Cj8wg3bdW4Gb+bGBWQ1ElAPFgaHU6znLZYeHm729ufoz2cVPPLQF+tY7YkIqu+stgwCINRH1Zm96bnbbjm+SPT3Cm3fivoP5lubcwiJPGKmN9k74vERkLN2ETW0A0ajWfSfzchaHgEVtdHULb99DsJKyE+/NtbXk5hdwGWultROWvkDAb5+hy5cF4yFG1xLC1Ra68JF8mCf+SlyASzADlKippPdam/bilf71m4DXvtOH4/49BCPoyeeIKIHkYffoNuUT57Pg8YJHNKV24DwQBj6LAUD2QYXZi2Acd8r+XbyIu7rcxtbLChox7O5FdlP/Jv+jmpBfmCxivtyL1nMAAAAASUVORK5CYII=";
 
     doc.autoTable({
-      head: [["Permissions", ...state.roles]],
-      startY: 20,
-      styles: { halign: "center" },
-      columnStyles: { 0: { fillColor: [41, 128, 186], textColor: [255, 255, 255] }, fontStyle: "bold" },
+      head: [["Activities / Roles", ...state.roles]],
+      startY: 22.5,
+      styles: { halign: "center", valign: "middle" },
+      theme: "grid",
+      headStyles: { fillColor: [41, 128, 186], textColor: [255, 255, 255], lineColor: [0, 0, 0],  },
+      columnStyles: { 0: { fontStyle: "bold", fillColor: [41, 128, 186], textColor: [255, 255, 255] } },
       body: state.activities.map((x) => [x]),
       didDrawCell: (data) => {
         if (data.section === "body" && data.column.index > 0) {
-          console.log(data.row.index, data.column.index);
           doc.addImage(
             state.matrix[data.row.index][data.column.index - 1] ? base64_ticked_img : base64_unticked_img,
             "PNG",
