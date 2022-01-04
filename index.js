@@ -30,26 +30,26 @@ window.addEventListener("load", (evt) => {
   const tbody = tabela.querySelector("tbody");
 
   const get_role_count = () => tbody.firstElementChild.cells.length - 1;
-  const get_activity_count = () => tbody.rows.length - 1;
+  const get_activity_count = () => tbody.rows.length - 2;
 
   function get_activities() {
     const activities = [];
-    for (let i = 1; i < tbody.rows.length; i++) activities.push(tbody.rows.item(i).cells.item(0).innerText.trim());
+    for (let i = 1; i <= get_activity_count(); i++) activities.push(tbody.rows.item(i).cells.item(0).innerText.trim());
     return activities;
   }
 
   function get_roles() {
     const roles = [];
     const first_row = tbody.rows.item(0);
-    for (let i = 1; i < first_row.cells.length; i++) roles.push(first_row.cells.item(i).innerText.trim());
+    for (let i = 1; i <= get_role_count(); i++) roles.push(first_row.cells.item(i).innerText.trim());
     return roles;
   }
 
   function get_matrix() {
     const matrix = [];
-    for (let i = 1; i < tbody.rows.length; i++) {
+    for (let i = 1; i <= get_activity_count(); i++) {
       const sub_matrix = [];
-      for (let j = 1; j < tbody.rows.item(i).cells.length; j++) sub_matrix.push(tbody.rows.item(i).cells.item(j).firstElementChild.checked);
+      for (let j = 1; j <= get_role_count(); j++) sub_matrix.push(tbody.rows.item(i).cells.item(j).firstElementChild.checked);
       matrix.push(sub_matrix);
     }
     return matrix;
@@ -58,6 +58,12 @@ window.addEventListener("load", (evt) => {
   function get_state() {
     return { activities: get_activities(), roles: get_roles(), matrix: get_matrix() };
   }
+
+  window.addEventListener("keydown", (evt) => {
+    if (evt.key == "s") {
+      console.log(get_state());
+    }
+  });
 
   function is_valid_state(state) {
     if (state && state.activities && state.roles && state.matrix) {
@@ -141,11 +147,47 @@ window.addEventListener("load", (evt) => {
         new_cell.appendChild(new_checkbox);
         new_row.appendChild(new_cell);
       });
+
+      const remove_activity_button_cell = document.createElement("td");
+      const remove_activity_button = document.createElement("button");
+      remove_activity_button.type = "button";
+      remove_activity_button.className = "btn btn-sm btn-danger";
+      remove_activity_button.innerHTML = '<i class="far fa-trash-alt">';
+      remove_activity_button.addEventListener("click", (evt) => {
+        remove_activity_button.disabled = true;
+        if (get_activity_count() > 0) {
+          tbody.removeChild(new_row);
+          quick_save_state();
+        }
+      });
+      remove_activity_button_cell.appendChild(remove_activity_button);
+      new_row.appendChild(remove_activity_button_cell);
+
       tbody.appendChild(new_row);
     });
+
+    const remove_role_button_row = document.createElement("tr");
+    remove_role_button_row.appendChild(document.createElement("td"));
+    state.roles.forEach((role) => {
+      const remove_role_button_cell = document.createElement("td");
+      const remove_role_button = document.createElement("button");
+      remove_role_button.type = "button";
+      remove_role_button.className = "btn btn-sm btn-danger";
+      remove_role_button.innerHTML = '<i class="far fa-trash-alt">';
+      remove_role_button.addEventListener("click", (evt) => {
+        remove_role_button.disabled = true;
+        if (get_role_count() > 0) {
+          for (let row of tbody.rows) row.deleteCell(remove_role_button_cell.cellIndex);
+          quick_save_state();
+        }
+      });
+      remove_role_button_cell.appendChild(remove_role_button);
+      remove_role_button_row.appendChild(remove_role_button_cell);
+    });
+    tbody.appendChild(remove_role_button_row);
   }
 
-  document.getElementById("adicionar-act").addEventListener("click", (evt) => {
+  document.getElementById("add-act").addEventListener("click", (evt) => {
     const new_row = document.createElement("tr");
     const new_cell = document.createElement("td");
     new_cell.innerText = "New Activity";
@@ -170,18 +212,27 @@ window.addEventListener("load", (evt) => {
       new_cell.appendChild(new_checkbox);
       new_row.appendChild(new_cell);
     }
-    tbody.appendChild(new_row);
+
+    const remove_activity_button_cell = document.createElement("td");
+    const remove_activity_button = document.createElement("button");
+    remove_activity_button.type = "button";
+    remove_activity_button.className = "btn btn-sm btn-danger";
+    remove_activity_button.innerHTML = '<i class="far fa-trash-alt">';
+    remove_activity_button.addEventListener("click", (evt) => {
+      remove_activity_button.disabled = true;
+      if (get_activity_count() > 0) {
+        tbody.removeChild(new_row);
+        quick_save_state();
+      }
+    });
+    remove_activity_button_cell.appendChild(remove_activity_button);
+    new_row.appendChild(remove_activity_button_cell);
+
+    tbody.insertBefore(new_row, tbody.lastElementChild);
     quick_save_state();
   });
 
-  document.getElementById("remover-act").addEventListener("click", (evt) => {
-    if (get_activity_count() > 0) {
-      tabela.deleteRow(get_activity_count());
-      quick_save_state();
-    }
-  });
-
-  document.getElementById("adicionar-role").addEventListener("click", (evt) => {
+  document.getElementById("add-role").addEventListener("click", (evt) => {
     const new_cell = document.createElement("th");
     new_cell.innerText = "New Role";
     new_cell.className = "special";
@@ -198,22 +249,32 @@ window.addEventListener("load", (evt) => {
     });
     add_input_quick_save_callback(new_cell);
     tbody.rows.item(0).appendChild(new_cell);
+
     for (let i = 1; i <= get_activity_count(); i++) {
       const new_cell = document.createElement("td");
       const new_checkbox = document.createElement("input");
       new_checkbox.type = "checkbox";
       add_input_quick_save_callback(new_checkbox);
       new_cell.appendChild(new_checkbox);
-      tbody.rows.item(i).appendChild(new_cell);
+      tbody.rows.item(i).insertBefore(new_cell, tbody.rows.item(i).lastElementChild);
     }
-    quick_save_state();
-  });
 
-  document.getElementById("remover-role").addEventListener("click", (evt) => {
-    if (get_role_count() > 0) {
-      for (let row of tbody.rows) row.removeChild(row.lastElementChild);
-      quick_save_state();
-    }
+    const remove_role_button_cell = document.createElement("td");
+    const remove_role_button = document.createElement("button");
+    remove_role_button.type = "button";
+    remove_role_button.className = "btn btn-sm btn-danger";
+    remove_role_button.innerHTML = '<i class="far fa-trash-alt">';
+    remove_role_button.addEventListener("click", (evt) => {
+      remove_role_button.disabled = true;
+      if (get_role_count() > 0) {
+        for (let row of tbody.rows) row.deleteCell(remove_role_button_cell.cellIndex);
+        quick_save_state();
+      }
+    });
+    remove_role_button_cell.appendChild(remove_role_button);
+    tbody.rows.item(get_activity_count() + 1).appendChild(remove_role_button_cell);
+
+    quick_save_state();
   });
 
   document.getElementById("save").addEventListener("click", (evt) => {
@@ -289,7 +350,7 @@ window.addEventListener("load", (evt) => {
       startY: 22.5,
       styles: { halign: "center", valign: "middle" },
       theme: "grid",
-      headStyles: { fillColor: [41, 128, 186], textColor: [255, 255, 255], lineColor: [0, 0, 0],  },
+      headStyles: { fillColor: [41, 128, 186], textColor: [255, 255, 255], lineColor: [0, 0, 0] },
       columnStyles: { 0: { fontStyle: "bold", fillColor: [41, 128, 186], textColor: [255, 255, 255] } },
       body: state.activities.map((x) => [x]),
       didDrawCell: (data) => {
