@@ -66,3 +66,8 @@ input[type="checkbox"] {
   flex-wrap: wrap;
   justify-content: center;
 }
+
+table {
+  border-collapse:separate;
+  border-radius:6px;
+}
