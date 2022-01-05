@@ -59,12 +59,6 @@ window.addEventListener("load", (evt) => {
     return { activities: get_activities(), roles: get_roles(), matrix: get_matrix() };
   }
 
-  window.addEventListener("keydown", (evt) => {
-    if (evt.key == "s") {
-      console.log(get_state());
-    }
-  });
-
   function is_valid_state(state) {
     if (state && state.activities && state.roles && state.matrix) {
       if (state.activities.length == state.matrix.length) {
@@ -84,7 +78,6 @@ window.addEventListener("load", (evt) => {
   function add_input_quick_save_callback(node) {
     node.addEventListener("input", (evt) => {
       quick_save_state();
-      console.log("quick-saving");
     });
   }
 
