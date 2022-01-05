@@ -340,7 +340,7 @@ window.addEventListener("load", (evt) => {
       doc.text(textOffset, y, text);
     };
     doc.setFontSize(25);
-    centeredText("Roles and Permission matrix", 15);
+    centeredText("Roles and Permissions matrix", 15);
     doc.setFontSize(10);
 
     const state = get_state();
