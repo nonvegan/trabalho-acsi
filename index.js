@@ -296,6 +296,7 @@ window.addEventListener("load", (evt) => {
       Toast.fire({
         icon: "error",
         title: "Failed to load file",
+        text: "Bad file format"
       });
 
     var inputNode = document.createElement("input");
